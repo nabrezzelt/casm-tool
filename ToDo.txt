@@ -1,0 +1,4 @@
+ToDo:
+
+- Gruppe erstellen über Seite
+- Gruppe löschen über gruppenübersicht
