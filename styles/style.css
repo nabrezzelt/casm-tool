@@ -1,0 +1,26 @@
+.login-frame {    
+    max-width: 400px; 
+    margin: 10% auto 0 auto;
+}
+
+.main-frame {
+    margin-top: 83px;
+}
+
+.admin-panel-header {
+    border: none !important;
+    margin-bottom: 0px !important;
+}
+
+.admin-panel-header > li {
+    font-size: 18px;
+}
+
+.admin-panel-btn-back
+{
+    font-size: 16px !important;
+}
+
+/*body {
+    background-image: url(/devControl/images/bg.jpg);
+} */
