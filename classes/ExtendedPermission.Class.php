@@ -28,7 +28,7 @@
                                         FROM permissions UNION ALL
                                         SELECT permissionID, 1 AS hasPermission
                                         FROM user_permissions
-                                        WHERE ( userID = 1 )) AS inner_table
+                                        WHERE ( userID = $userID )) AS inner_table
                                 GROUP BY permissionID) A1
                                 LEFT JOIN (
                                             SELECT *

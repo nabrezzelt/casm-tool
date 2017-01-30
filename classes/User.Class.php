@@ -191,6 +191,15 @@
             return new User($id, $username, $email, $rankName, $lastLogin, $lastIP, $registerDate);
         }
 
+        public static function getMemberCount()
+        {
+            $query = "SELECT count(*) AS memberCount FROM users";
+            $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
+            $row = mysql_fetch_assoc($res);
+            
+            return $row['memberCount'];
+        }
+
         public static function createUser($username, $email, $password, $rankName = '') 
         {
             $query = "INSERT INTO users (username, email, password, rankname) VALUES 

@@ -51,10 +51,10 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Bearbeiter-Gruppen <span class="caret"></span></a>
                         <ul class="dropdown-menu">                                
-                            <li><a href="assignment-groups.php"> Bearbeiter-Gruppe anzeigen</a></li>
-                            <li><a href="#"> Bearbeiter-Gruppen hinzufügen</a></li>                                
+                            <li><a href="assignment-groups.php"> Bearbeiter-Gruppen anzeigen</a></li>
+                            <li><a href="assignment-groups.php#addGroup"> Bearbeiter-Gruppen hinzufügen</a></li>                                
                             <li role="separator" class="divider"></li>
-                            <li><a href="#"></span> Bearbeiter-Untergruppen hinzufügen</a></li>
+                            <li><a href="assignment-groups.php#addSubGroup"></span> Bearbeiter-Untergruppen hinzufügen</a></li>
                         </ul>
                     </li>
                     <li><a href="#">Wiki</a></li>

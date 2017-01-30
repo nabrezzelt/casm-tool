@@ -62,7 +62,7 @@
             while($row = mysql_fetch_assoc($res))
             {
                 $organisationID = $row['id'];
-                $organisatioName = $row['name'];
+                $organisationName = $row['name'];
                 $assignmentGroups = new SplDoublyLinkedList();
 
                 $query = "SELECT assignment_group.*, `status`.name AS statusName
@@ -70,9 +70,9 @@
                           JOIN `status`
                           ON `status`.id = assignment_group.statusID
                           WHERE organisationID = $organisationID";
-                $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
+                $res2 = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
 
-                while($row2 = mysql_fetch_assoc($res))
+                while($row2 = mysql_fetch_assoc($res2))
                 {
                     $assignmentGroupID = $row2['id'];
                     $assignmentGroupName = $row2['name'];
@@ -84,11 +84,11 @@
                               JOIN `status`
                               ON `status`.id = assignment_sub_group.statusID
                               WHERE assignmentGroupID = $assignmentGroupID";
-                    $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
+                    $res3 = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
                     
                     $assignmentSubGroups = new SplDoublyLinkedList();
 
-                    while ($row3 = mysql_fetch_assoc($res)) 
+                    while ($row3 = mysql_fetch_assoc($res3)) 
                     {
                         $assignmentSubGroupID = $row3['id'];
                         $assignmentSubGroupName = $row3['name'];
@@ -102,7 +102,7 @@
 
                 }
 
-                $organisations->push(new Organisation($organisationID, $organisatioName, $assignmentGroups));
+                $organisations->push(new Organisation($organisationID, $organisationName, $assignmentGroups));
             }
 
             return $organisations;

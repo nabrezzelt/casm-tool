@@ -15,9 +15,11 @@
         const ADMIN_VIEW_GROUP_DETAILS = 9;
         const ADMIN_VIEW_GROUP_MEMBERS = 10;
         const ADMIN_VIEW_GROUP_PERMISSIONS = 11;
-        const ADMIN_CHANGE_GROUP_PERMISSIONS = 12;
+        const ADMIN_CHANGE_GROUP_PERMISSIONS = 12;        
+        const ADMIN_DELETE_GROUP = 13;
+        const ADMIN_CREATE_GROUP = 14;
 
-        const TOOL_VIEW_ASSIGNMENT_GROUPS = 13;
+        const TOOL_VIEW_ASSIGNMENT_GROUPS = 15;
 
         
         protected $id;

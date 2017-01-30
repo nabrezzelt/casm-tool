@@ -55,6 +55,32 @@
 
         }
 
+        public static function create($groupName)
+        {
+            $query = "INSERT INTO groups (name) VALUES ('$groupName')";
+            $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));           
+        }
+
+        public static function delete($groupID)
+        {
+            Group::removeAllUsers($groupID);
+            Group::removeAllPermissions($groupID);
+            $query = "DELETE FROM groups WHERE id = $groupID";
+            $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__)); 
+        }
+
+        public static function removeAllUsers($groupID)
+        {
+            $query = "DELETE FROM group_user_relation WHERE groupID = $groupID";
+            $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__)); 
+        }
+
+        public static function removeAllPermissions($groupID)
+        {
+            $query = "DELETE FROM group_permissions WHERE groupID = $groupID";
+            $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__)); 
+        }
+
         public static function addUser($userID, $groupID)
         {
             $query = "INSERT INTO group_user_relation (userID, groupID) VALUES ($userID, $groupID)";
