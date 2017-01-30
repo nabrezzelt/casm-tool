@@ -268,6 +268,54 @@
                 }                           
             break;
 
+            case "group-create":
+                if(Permission::hasPermission(Permission::ADMIN_DELETE_GROUP, unserialize($_SESSION['user'])->getID())) 
+                {
+                    if(isset($_POST['groupName'])) 
+                    {
+                        Group::create(mysql_real_escape_string($_POST['groupName']));
+                        Helper::showAlert("Group successfully created!", "success");
+                        Helper::redirectTo("admin-panel.php#groupManagement", 3);
+                    } 
+                    else
+                    {
+                        $re .= "<div class='container' style='margin-top: 60px;'>";
+                            $re .= "<div class='panel panel-default'>";
+                                $re .= "<div class='panel-heading'>";
+                                    $re .= "<form action='admin-panel.php?act=group-create' method='POST'>
+                                                <div class='form-group'>
+                                                    <label for='groupName'>Groupname:</label>
+                                                    <input type='text' class='form-control' name='groupName' />
+                                                </div>                                        
+                                                <button type='submit' class='btn btn-default'>Create</button>
+                                            </form>";
+                                $re .= "</div>";
+                            $re .= "</div>";                                
+                        $re .= "</div>";
+                    }
+                }
+                else
+                {
+                    return Helper::noPermission(Permission::ADMIN_DELETE_GROUP);
+                } 
+            break;
+
+            case "group-delete":
+                if(isset($_GET['groupID'])) 
+                {
+                    if(Permission::hasPermission(Permission::ADMIN_CREATE_GROUP, unserialize($_SESSION['user'])->getID())) 
+                    {
+                        Group::delete(mysql_real_escape_string($_GET['groupID']));
+                        Helper::showAlert("Group successfully deleted!", "success");
+                        Helper::redirectTo("admin-panel.php#groupManagement", 3);
+                    }
+                    else
+                    {
+                        return Helper::noPermission(Permission::ADMIN_CREATE_GROUP);
+                    }
+                }   
+            break;
+
             default:                
                 $re .= "<div class='panel panel-default'>                    
                             <div class='panel-heading'>
@@ -277,7 +325,7 @@
                             </div>
                             <div class='panel-body'>
                                 <ul class='nav nav-tabs'>
-                                    <li class='active'><a data-toggle='tab' href='#userList'><span class='glyphicon glyphicon-user'></span> Userlist</a></li>
+                                    <li class='active'><a data-toggle='tab' href='#userList'><span class='glyphicon glyphicon-user'></span> Userlist " . ((Permission::hasPermission(Permission::ADMIN_VIEW_USERLIST, unserialize($_SESSION['user'])->getID())) ? "<span class='badge'>" . User::getMemberCount() . "</span>" : '') . " </a></li>
                                     <li><a data-toggle='tab' href='#groupManagement'>Grouplist</a></li>
                                     <li><a data-toggle='tab' href='#categoryProjectList'>Project-/Categorymanagement</a>
                                 </ul>
@@ -297,8 +345,7 @@
                             </div>   
                         </div>";                             
             break;  
-        }
-
+        }        
         return $re;
     }   
 
@@ -320,12 +367,16 @@
                                         <td>" . $group->getName() . "</td>
                                         <td>" . ((Permission::hasPermission(Permission::ADMIN_VIEW_GROUP_MEMBERS, unserialize($_SESSION['user'])->getID())) ? $group->getMemberCount() : '-') . "</td>                                                                           
                                         <td class='text-right'>
-                                            <a class='btn btn-default btn-xs' href='admin-panel.php?act=show-group&groupID=" . $group->getID() . "'><span class='glyphicon glyphicon-info-sign'></span> Info</a>
-                                        </td>
+                                            " . (Permission::hasPermission(Permission::ADMIN_VIEW_GROUP_DETAILS, unserialize($_SESSION['user'])->getID()) ? "<a class='btn btn-default btn-xs' href='admin-panel.php?act=show-group&groupID=" . $group->getID() . "'><span class='glyphicon glyphicon-info-sign'></span> Info</a>" : "") . "
+                                            " . (Permission::hasPermission(Permission::ADMIN_DELETE_GROUP, unserialize($_SESSION['user'])->getID()) ? "<a class='btn btn-default btn-xs' href='admin-panel.php?act=group-delete&groupID=" . $group->getID() . "'><span class='glyphicon glyphicon-trash'></span> Remove</a>" : '') . "
+                                            </td>
                                     </tr>";
                         }
 
-                        
+                         if(Permission::hasPermission(Permission::ADMIN_CREATE_GROUP, unserialize($_SESSION['user'])->getID()))
+                        {
+                            $re .= "<tr><td class='text-right' colspan='4'><a class='btn btn-default' href='admin-panel.php?act=group-create'><span class='glyphicon glyphicon-plus'></span> Create new Group</a></td></tr>";
+                        }
                         
             $re .= "</table>";
             return $re;

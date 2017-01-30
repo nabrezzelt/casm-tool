@@ -52,10 +52,10 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Bearbeiter-Gruppen <span class="caret"></span></a>
                         <ul class="dropdown-menu">                                
-                            <li><a href="#"> Bearbeiter-Gruppen anzeigen</a></li>
-                            <li><a href="#"> Bearbeiter-Gruppen hinzufügen</a></li>                                
+                            <li><a href="assignment-groups.php"> Bearbeiter-Gruppen anzeigen</a></li>
+                            <li><a href="assignment-groups.php#addGroup"> Bearbeiter-Gruppen hinzufügen</a></li>                                
                             <li role="separator" class="divider"></li>
-                            <li><a href="#"></span> Bearbeiter-Untergruppen hinzufügen</a></li>
+                            <li><a href="assignment-groups.php#addSubGroup"></span> Bearbeiter-Untergruppen hinzufügen</a></li>
                         </ul>
                     </li>
                     <li><a href="#">Wiki</a></li>
@@ -92,5 +92,14 @@
     <script src="js/jquery.min.js"></script>
     <!-- Binde alle kompilierten Plugins zusammen ein (wie hier unten) oder such dir einzelne Dateien nach Bedarf aus -->
     <script src="js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if(location.hash != null && location.hash != ""){
+                $('.collapse').removeClass('in');
+                $(location.hash + '.collapse').collapse('show');
+            }
+        });
+</script>
   </body>
 </html>

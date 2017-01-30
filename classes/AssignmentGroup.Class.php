@@ -67,6 +67,17 @@
         {
             return $this->status;
         }
+
+        public function setAssignmentSubGroups($assignmentSubGroups)
+        {
+            $this->assignmentSubGroups = $assignmentSubGroups;
+        }
+
+        public function getAssignmentSubGroups()
+        {
+            return $this->assignmentSubGroups;
+        }
+
     }
     
 ?>
