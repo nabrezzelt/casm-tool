@@ -5,7 +5,8 @@
     if (isset($_SESSION['user'])) 
     {        
          //User is LoggedIn
-         Helper::redirectTo("main.php");         
+         Helper::redirectTo("main.php");  
+         exit;       
     }
 ?>
 
