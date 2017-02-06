@@ -20,7 +20,9 @@
         const ADMIN_CREATE_GROUP = 14;
 
         const TOOL_VIEW_ASSIGNMENT_GROUPS = 15;
-
+        const TOOL_CREATE_ASSIGNMENT_GROUP = 16;
+        const TOOL_CREATE_ASSIGNMENT_SUB_GROUP = 17;
+        const TOOL_VIEW_MENU_POINTS = 18;
         
         protected $id;
         protected $name;

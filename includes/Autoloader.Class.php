@@ -9,8 +9,15 @@
         const DEBUG   = 0x2000;
     }
 
-    class AutoLoader
+    class AJAXTypes
     {
+        const NO_PERMISSION = -1;
+        const OK = 0;
+        const FAILED = 1;        
+    }
+
+    class AutoLoader
+    {            
         public static function Init($status)
         {
             switch ($status) 
@@ -32,15 +39,20 @@
                 break;                
             }
 
-            AutoLoader::Load();
+            AutoLoader::Load();           
         }
 
 
        private static function Load()
        {
-        ### Exceptions
-            require_once("classes/exceptions/SQLException.Class.php");                                
+         ### Exceptions
+            //require_once("classes/exceptions/SQLException.Class.php");                                
             
+         ### Database Classes
+            require_once("classes/Database/exceptions/DatabaseException.php");
+            require_once("classes/Database/Database.Class.php");
+            require_once("classes/Database/MysqlDatabase.Class.php");
+
          ### Helper Classes
             require_once("classes/Helper.Class.php");
             require_once("classes/Crypt.Class.php");
@@ -48,7 +60,7 @@
 
         ### User/Permission Classes
             require_once("classes/User.Class.php");
-            require_once("classes/Status.Class.php");            
+            require_once("classes/AssignmentStatus.Class.php");            
             require_once("classes/Permission.Class.php");
             require_once("classes/ExtendedPermission.Class.php");
             require_once("classes/Group.Class.php");     
@@ -57,6 +69,8 @@
             require_once("classes/Organisation.Class.php");
             require_once("classes/AssignmentGroup.Class.php");
             require_once("classes/AssignmentSubGroup.Class.php");
+            require_once("classes/MenuPoint.Class.php");
+            require_once("classes/Role.Class.php");
        }
     }    
 ?>

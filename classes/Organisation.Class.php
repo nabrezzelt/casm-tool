@@ -65,10 +65,10 @@
                 $organisationName = $row['name'];
                 $assignmentGroups = new SplDoublyLinkedList();
 
-                $query = "SELECT assignment_group.*, `status`.name AS statusName
+                $query = "SELECT assignment_group.*, `assignment_status`.name AS statusName
                           FROM assignment_group 
-                          JOIN `status`
-                          ON `status`.id = assignment_group.statusID
+                          JOIN `assignment_status`
+                          ON `assignment_status`.id = assignment_group.statusID
                           WHERE organisationID = $organisationID";
                 $res2 = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
 
@@ -77,12 +77,12 @@
                     $assignmentGroupID = $row2['id'];
                     $assignmentGroupName = $row2['name'];
                     $assignmentGroupDescription = $row2['description'];
-                    $assignmentGroupStatus = new Status($row2['statusID'], $row2['statusName']);
+                    $assignmentGroupStatus = new AssignmentStatus($row2['statusID'], $row2['statusName']);
 
-                    $query = "SELECT assignment_sub_group.*, `status`.name AS statusName
+                    $query = "SELECT assignment_sub_group.*, `assignment_status`.name AS statusName
                               FROM  assignment_sub_group
-                              JOIN `status`
-                              ON `status`.id = assignment_sub_group.statusID
+                              JOIN `assignment_status`
+                              ON `assignment_status`.id = assignment_sub_group.statusID
                               WHERE assignmentGroupID = $assignmentGroupID";
                     $res3 = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
                     
@@ -93,7 +93,7 @@
                         $assignmentSubGroupID = $row3['id'];
                         $assignmentSubGroupName = $row3['name'];
                         $assignmentSubGroupDescription = $row3['description'];
-                        $assignmentSubGroupStatus = new Status($row3['statusID'], $row3['statusName']);
+                        $assignmentSubGroupStatus = new AssignmentStatus($row3['statusID'], $row3['statusName']);
 
                         $assignmentSubGroups->push(new AssignmentSubGroup($assignmentSubGroupID, $assignmentSubGroupName, $assignmentSubGroupDescription, $assignmentSubGroupStatus));
                     }
@@ -103,6 +103,23 @@
                 }
 
                 $organisations->push(new Organisation($organisationID, $organisationName, $assignmentGroups));
+            }
+
+            return $organisations;
+        }
+
+        public static function getAllOrganisationsWithoutSubGroups()
+        {
+            $query = "SELECT * FROM organisation";
+            $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
+            $organisations = new SplDoublyLinkedList();
+
+            while($row = mysql_fetch_assoc($res))
+            {
+                $id = $row['id'];
+                $name = $row['name'];
+
+                $organisations->push(new Organisation($id, $name));
             }
 
             return $organisations;

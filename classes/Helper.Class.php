@@ -40,35 +40,58 @@ class Helper
         return end(explode('.', $filename));;
     }
 
-    /**
-     * Find the ProjectID in the Database from the given AttachmentID
-     *
-     * @param int $attachmentID ID of a Attachment-File
-     **/
-    public static function getProjectIDByAttachmentID($attachmentID)
+    public static function getOrganisationByAssignmentGroup($groupID)
     {
-        $query = "SELECT category.projectID FROM attachments
-                  JOIN bugs
-                  ON attachments.bugID = bugs.id
-                  JOIN category
-                  ON bugs.categoryID = category.id
-                  WHERE attachments.id = '$attachmentID'";
-        $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
+        $query = "SELECT Organisation.* 
+                  FROM assignment_group
+                  JOIN Organisation
+                  ON Organisation.id = assignment_group.organisationID
+                  WHERE assignment_group.id = $groupID";
+        $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));            
         $row = mysql_fetch_assoc($res);
-
-        return $row['projectID'];
+        
+        $id = $row['id'];
+        $name = $row['name'];
+        
+        return new Organisation($id, $name);
     }
 
-    public static function getProjectIDByBugID($bugID)
+    public static function getOrganisationBySubGroup($subgroupID)
     {
-        $query = "SELECT category.projectID FROM bugs
-                  JOIN category
-                  ON bugs.categoryID = category.id
-                  WHERE bugs.id = '$bugID'";
-        $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
+        $query = "SELECT organisation.*
+                  FROM assignment_sub_group
+                  JOIN assignment_group
+                  ON assignment_group.id = assignment_sub_group.assignmentGroupID
+                  JOIN organisation
+                  ON organisation.id = assignment_group.organisationID
+                  WHERE assignment_sub_group.id = $subgroupID";
+        $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));            
         $row = mysql_fetch_assoc($res);
+        
+        $id = $row['id'];
+        $name = $row['name'];
+        
+        return new Organisation($id, $name);
+    }
 
-        return $row['projectID'];
+    public static function getParentGroupBySubGroup($subgroupID)
+    {
+        $query = "SELECT assignment_group.id, assignment_group.name As groupName, assignment_group.description, assignment_status.id AS statusID, assignment_status.name AS statusName
+                  FROM assignment_sub_group
+                  JOIN assignment_group
+                  ON assignment_group.id = assignment_sub_group.assignmentGroupID
+                  JOIN assignment_status
+                  ON assignment_group.statusID = assignment_status.id
+                  WHERE assignment_sub_group.id = $subgroupID";
+        $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));            
+        $row = mysql_fetch_assoc($res);
+              
+        $id = $subgroupID;
+        $name = $row['groupName'];
+        $description = $row['description'];
+        $status = new AssignmentStatus($row['statusID'], $row['statusName']);
+
+        return new AssignmentGroup($id, $name, $description, $status);
     }
 
     public static function noPermission($permissionID, $dismissible = false) 

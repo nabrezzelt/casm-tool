@@ -2,7 +2,7 @@
     /**
      * 
      */
-    class Status
+    class AssignmentStatus
     {
         
         private $id;
@@ -26,16 +26,16 @@
 
         public static function getStatusByID($id) 
         {
-            $query = "SELECT * FROM status WHERE id = '$id'";
+            $query = "SELECT * FROM assignment_status WHERE id = '$id'";
             $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
             $row = mysql_fetch_assoc($res);
 
-            return new Status($row['id'], $row['name']);            
+            return new AssignmentStatus($row['id'], $row['name']);            
         }
 
         public static function getAllStatus()
         {
-            $query = "SELECT * FROM status";
+            $query = "SELECT * FROM assignment_status";
             $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
             
             $status = new SplDoublyLinkedList();
@@ -44,7 +44,7 @@
                 $id = $row['id'];
                 $name = $row['name'];
 
-                $status->push(new Status($id, $name));
+                $status->push(new AssignmentStatus($id, $name));
             }
 
             return $status;

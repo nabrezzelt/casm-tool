@@ -22,6 +22,8 @@
             $this->lastLogin = $lastLogin;
             $this->lastIP = $lastIP;
             $this->registerDate = $registerDate;
+
+            //Open new DB-Connection
         }
 
 		public function setId($id)
@@ -136,7 +138,7 @@
             }
 
             if (Crypt::hashStringWithSalt($password) == $user->getPassword()) 
-            {
+            {                
                 $query = "UPDATE users SET lastLogin = NOW(), LastIP = '" . User::getIP() . "' WHERE id = '" . $user->getID() . "'";
                 $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
 
@@ -170,7 +172,7 @@
             {
                 $query = "SELECT * FROM users WHERE username = '$ID_Username'";
             }            
-                    
+              
             $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
 
             if (!$res) 
