@@ -29,7 +29,8 @@
     <![endif]-->
 
     <link href="styles/style.css" type="text/css" rel="stylesheet" />
-    <link href="favicon.ico" type="image/x-icon" rel="shortcut icon" />    
+    <link href="favicon.ico" type="image/x-icon" rel="shortcut icon" />
+    <link rel="stylesheet" href="css/font-awesome.min.css">      
 </head>
 <body>    
     <div class="container-fluid">

@@ -1,4 +1,39 @@
 ToDo:
 
-- Gruppe erstellen über Seite
-- Gruppe löschen über gruppenübersicht
+
+##########
+Menü rekursiv als Liste ausgeben:
+##########
+
+public static function printChildsAsList($parentid) 
+        {
+            if($parentid == null)
+            {
+                $query = "SELECT * FROM menu_point WHERE parentID IS NULL";
+            }
+            else
+            {
+                $query = "SELECT * FROM menu_point WHERE parentID = '" . $parentid . "'";
+            }
+
+            $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
+
+            while($row = mysql_fetch_assoc($res)):
+                $i = 0;
+                if ($i == 0)
+                {
+                    echo "<ul>";
+                }
+
+                echo "<li>" . $row['name'];
+                    MenuPoint::printChildsAsList($row['id']);
+                echo "</li>";
+                $i++;
+
+                if ($i > 0)
+                {
+                    echo "</ul>";
+                } 
+
+            endwhile;            
+        }

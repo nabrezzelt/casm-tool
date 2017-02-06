@@ -1,19 +1,20 @@
-<?php         
+<?php        
     require_once("includes/Autoloader.Class.php");
-    require_once("handler/admin-panel.handler.php");
+    require_once("handler/menu-points.handler.php");
     Autoloader::Init(Dev::DEBUG);    
 
     if (!isset($_SESSION['user'])) 
     {        
         //User is not LoggedIn
-        Helper::redirectTo("index.php");                  
+        Helper::redirectTo("index.php");
+        exit;         
     }
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?php echo APPNAME; ?> > Admin-Panel</title>
+    <title><?php echo APPNAME; ?> > Menü-Struktur</title>
 
     <meta charset="ISO-8859-1" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -59,7 +60,7 @@
                             <li><a href="assignment-groups.php#create-sub-group"></span> Bearbeiter-Untergruppen hinzufügen</a></li>
                         </ul>
                     </li>
-                    <li><a href="menu-points.php">Menü-Struktur</a></li>
+                    <li class='active'><a href="menu-points.php">Menü-Struktur</a></li>
                     <li><a href="#">Changelog</a></li> 
                 </ul>
 
@@ -83,11 +84,10 @@
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
-    </nav>    
-    <div class='container main-frame'>        
-        <?php
-            echo handler();
-        ?>          
+    </nav>
+
+    <div class='container main-frame'>
+        <?php echo handler(); ?>
     </div>
 
     <!-- jQuery (wird für Bootstrap JavaScript-Plugins benötigt) -->
@@ -95,18 +95,8 @@
     <!-- Binde alle kompilierten Plugins zusammen ein (wie hier unten) oder such dir einzelne Dateien nach Bedarf aus -->
     <script src="js/bootstrap.min.js"></script>
 
-    <script>
-        var url = document.location.toString();
-        if (url.match('#')) {
-            $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
-        }
-
-        // Change hash for page-reload
-        $('.nav-tabs a').on('shown.bs.tab', function (e) {
-            window.location.hash = e.target.hash;
-        })
-                
-
+    <script type="text/javascript">        
+        
     </script>
   </body>
 </html>

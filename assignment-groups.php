@@ -6,7 +6,8 @@
     if (!isset($_SESSION['user'])) 
     {        
         //User is not LoggedIn
-        Helper::redirectTo("index.php");         
+        Helper::redirectTo("index.php"); 
+        exit;        
     }
 ?>
 
@@ -30,7 +31,8 @@
     <![endif]-->
 
     <link href="styles/style.css" type="text/css" rel="stylesheet" />
-    <link href="favicon.ico" type="image/x-icon" rel="shortcut icon" />    
+    <link href="favicon.ico" type="image/x-icon" rel="shortcut icon" />
+    <link rel="stylesheet" href="css/font-awesome.min.css">    
 </head>
 <body>        
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -53,12 +55,12 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Bearbeiter-Gruppen <span class="caret"></span></a>
                         <ul class="dropdown-menu">                                
                             <li><a href="assignment-groups.php"> Bearbeiter-Gruppen anzeigen</a></li>
-                            <li><a href="assignment-groups.php#addGroup"> Bearbeiter-Gruppen hinzufügen</a></li>                                
+                            <li><a href="assignment-groups.php#create-group"> Bearbeiter-Gruppen hinzufügen</a></li>                                
                             <li role="separator" class="divider"></li>
-                            <li><a href="assignment-groups.php#addSubGroup"></span> Bearbeiter-Untergruppen hinzufügen</a></li>
+                            <li><a href="assignment-groups.php#create-sub-group"></span> Bearbeiter-Untergruppen hinzufügen</a></li>
                         </ul>
                     </li>
-                    <li><a href="#">Wiki</a></li>
+                    <li><a href="menu-points.php">Menü-Struktur</a></li>
                     <li><a href="#">Changelog</a></li> 
                 </ul>
 
@@ -100,6 +102,52 @@
                 $(location.hash + '.collapse').collapse('show');
             }
         });
+
+        $(document).ready(function(){
+            $('[data-toggle="popover"]').popover({
+                 html : true
+            });
+        });      
+
+        $('.show-group-details').on('click', function() {           
+            var id = $(this).data("id");
+            var re;
+            var desciptionFound = false;
+
+            console.log("clicked");
+
+            $.get("ajax.php?act=getGroup&id=" + id, function(data) {
+                switch (data.AJAXCode) 
+                {
+                    case -1:
+                        console.log("No Permission");
+                        break;
+                    case 0:
+                        if(data.description == null || data.description == "")
+                        {
+                            re = "No description found.";
+                        }
+                        else
+                        {
+                            re = data.description;
+                            desciptionFound = true;
+                        }
+
+                        $(".modal-body").html("<form action='#" + id + "' method='POST'>");
+                            $(".modal-body").append("<div class='form-group'>");
+                                $(".modal-body").append("<label for='description'>Description:</label>");
+                                $(".modal-body").append("<textarea name='description' class='form-control' rows='3'>" + re + "</textarea>");
+                            $(".modal-body").append("</div>");
+                            $(".modal-body").append("<button style='margin-top: 10px; align: right;' type='submit' class='btn btn-primary'>Save Changes</button>");
+                        $(".modal-body").append("</form>");
+
+                        $('#descriptionModal').modal();
+                        break;             
+                                       
+                }                              
+            }, "json" );             
+        });     
+        
 </script>
   </body>
 </html>

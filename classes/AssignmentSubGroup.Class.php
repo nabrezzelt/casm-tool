@@ -56,6 +56,36 @@
         {
             return $this->status;
         }
+
+        public static function create($assignmentGroupID, $name, $description, $statusID)
+        {
+            $query = "INSERT INTO assignment_sub_group (assignmentGroupID, name, description, statusID) VALUES ($assignmentGroupID, '$name', '$description', $statusID)";
+            $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
+        }
+
+        public static function saveDescription($id, $description)
+        {
+            $query = "UPDATE assignment_sub_group SET description = '$description' WHERE id = $id";
+            $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
+        }
+
+        public static function getGroupByID($id)
+        {
+            $query = "SELECT assignment_sub_group.*, `assignment_status`.name AS statusName
+                      FROM  assignment_sub_group
+                      JOIN `assignment_status`
+                      ON `assignment_status`.id = assignment_sub_group.statusID
+                      WHERE assignmentGroupID = $id";
+            $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));                   
+            $row = mysql_fetch_assoc($res); 
+                    
+            $id = $row['id'];
+            $name = $row['name'];
+            $description = $row['description'];
+            $status = new AssignmentStatus($row['statusID'], $row['name']);
+
+            return new AssignmentSubGroup($id, $name, $description, $status);            
+        }
     }
     
 ?>
