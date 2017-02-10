@@ -40,6 +40,21 @@
                 }
             break;
 
+            case "menu-point-delete":
+                if(isset($_GET['menu-point']))
+                {
+                    if(Permission::hasPermission(Permission::TOOL_DELETE_MENU_POINT, unserialize($_SESSION['user'])->getID()))
+                    {
+                        MenuPoint::delete(mysql_real_escape_string($_GET['menu-point']));
+                    }
+                    else
+                    {
+                        return Helper::noPermission(Permission::TOOL_DELETE_MENU_POINT);
+                    }
+                }
+            break;
+            
+
             default:
                 if(Permission::hasPermission(Permission::TOOL_VIEW_MENU_POINTS, unserialize($_SESSION['user'])->getID()))
                 {
