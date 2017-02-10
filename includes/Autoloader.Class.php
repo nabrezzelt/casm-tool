@@ -71,6 +71,7 @@
             require_once("classes/AssignmentSubGroup.Class.php");
             require_once("classes/MenuPoint.Class.php");
             require_once("classes/Role.Class.php");
+            require_once("classes/Ausloeser.Class.php");
        }
     }    
 ?>

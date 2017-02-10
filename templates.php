@@ -1,21 +1,22 @@
-<?php     
+<?php        
     require_once("includes/Autoloader.Class.php");
+    require_once("handler/templates.handler.php");
     Autoloader::Init(Dev::DEBUG);    
 
     if (!isset($_SESSION['user'])) 
     {        
         //User is not LoggedIn
-        Helper::redirectTo("index.php");
-        exit;         
+        Helper::redirectTo("index.php"); 
+        exit;        
     }
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?php echo APPNAME; ?> > Main</title>
+    <title><?php echo APPNAME; ?> > Templates</title>
 
-    <meta charset="ISO-8859-1" />
+    <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
 
@@ -30,7 +31,7 @@
     <![endif]-->
 
     <link href="styles/style.css" type="text/css" rel="stylesheet" />
-    <link href="favicon.ico" type="image/x-icon" rel="shortcut icon" />  
+    <link href="favicon.ico" type="image/x-icon" rel="shortcut icon" />
     <link rel="stylesheet" href="css/font-awesome.min.css">    
 </head>
 <body>        
@@ -86,12 +87,16 @@
     </nav>
 
     <div class='container main-frame'>
-    <?php var_dump(unserialize($_SESSION['user'])) ?>
+        <?php echo handler(); ?>
     </div>
 
     <!-- jQuery (wird für Bootstrap JavaScript-Plugins benötigt) -->
     <script src="js/jquery.min.js"></script>
     <!-- Binde alle kompilierten Plugins zusammen ein (wie hier unten) oder such dir einzelne Dateien nach Bedarf aus -->
     <script src="js/bootstrap.min.js"></script>
+
+    <script type="text/javascript"> 
+
+    </script>
   </body>
 </html>

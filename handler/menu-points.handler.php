@@ -15,7 +15,31 @@
             $act = "default";
         }
         
-        switch ($act) {                        
+        switch ($act) {     
+            case "add-menu-point":
+                if(isset($_GET['role']) && isset($_GET['menu-point']))
+                {
+                    echo "s1";
+                    if(Permission::hasPermission(Permission::TOOL_CHANGE_MENU_STATE, unserialize($_SESSION['user'])->getID()))
+                    {
+                        MenuPoint::add(mysql_real_escape_string($_GET['role']), mysql_real_escape_string($_GET['menu-point']));
+                        echo "s2";
+                    }
+                }                
+            break;
+
+            case "remove-menu-point":
+                if(isset($_GET['role']) && isset($_GET['menu-point']))
+                {
+                    echo "s3";
+                    if(Permission::hasPermission(Permission::TOOL_CHANGE_MENU_STATE, unserialize($_SESSION['user'])->getID()))
+                    {
+                        MenuPoint::remove(mysql_real_escape_string($_GET['role']), mysql_real_escape_string($_GET['menu-point']));
+                        echo "s4";
+                    }
+                }
+            break;
+
             default:
                 if(Permission::hasPermission(Permission::TOOL_VIEW_MENU_POINTS, unserialize($_SESSION['user'])->getID()))
                 {

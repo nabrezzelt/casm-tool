@@ -86,7 +86,7 @@
                 $re .=  "<tr>
                             <td style='padding-left:" . $margin . "px;'>" . $row['name'] . "</td>";
 
-                            $query = "  SELECT *, IF(A.id IS NULL, 0, 1) AS hasAccess
+                            $query = "  SELECT roles.id as roleID, roles.name, A.menuID, IF(A.id IS NULL, 0, 1) AS hasAccess
                                         FROM roles
                                         LEFT JOIN (
                                                     SELECT roles.id, menu_point_access.menuID
@@ -102,11 +102,11 @@
                                 $re .= "<td>";
                                 if($row2['hasAccess'] == 1)
                                 {
-                                    $re .= "<span class='glyphicon glyphicon-ok'></span>";
+                                    $re .= "<span class='remove-menu-point-permission' data-role='" . $row2['roleID'] . "' data-menu='" . $row['id'] . "' ><span class='glyphicon glyphicon-ok allowed'></span></span>"; //href='menu-points.php?act=remove-menu-point&menu-point=" . $row['id'] . "&role=" . $row2['roleID'] . "'
                                 }
                                 else
                                 {
-                                    $re .= "<span class='glyphicon glyphicon-remove'></span>";
+                                    $re .= "<span class='add-menu-point-permission' data-role='" . $row2['roleID'] . "' data-menu='" . $row['id'] . "'><span class='glyphicon glyphicon-remove not-allowed'></span></span>"; // href='menu-points.php?act=add-menu-point&menu-point=" . $row['id'] . "&role=" . $row2['roleID'] . "'
                                 }
                                 $re .= "</td>";
                             }                                      
@@ -123,6 +123,18 @@
             endwhile;
 
             return $re;            
+        }
+
+        public static function add($role, $menu)
+        {
+            $query = "INSERT INTO menu_point_access (roleID, menuID) VALUES ($role, $menu)";
+            $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
+        }
+
+        public static function remove($role, $menuPoint)
+        {
+            $query = "DELETE FROM menu_point_access WHERE roleID = $role AND menuID = $menuPoint";
+            $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
         }
     }
     

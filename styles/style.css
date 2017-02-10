@@ -20,3 +20,13 @@
 {
     font-size: 16px !important;
 }
+
+.allowed {
+    color: #93c54b;
+    cursor: pointer;
+}
+
+.not-allowed {
+    color:  #c9302c;
+    cursor: pointer;
+}
