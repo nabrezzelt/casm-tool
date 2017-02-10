@@ -61,7 +61,7 @@
                         </ul>
                     </li>
                     <li><a href="menu-points.php">Menü-Struktur</a></li>
-                    <li><a href="#">Changelog</a></li> 
+                    <li><a href="templates.php">Templates</a></li> 
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">                                

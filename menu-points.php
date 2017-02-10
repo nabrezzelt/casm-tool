@@ -61,7 +61,7 @@
                         </ul>
                     </li>
                     <li class='active'><a href="menu-points.php">Menü-Struktur</a></li>
-                    <li><a href="#">Changelog</a></li> 
+                    <li><a href="templates.php">Templates</a></li> 
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">                                
@@ -96,7 +96,31 @@
     <script src="js/bootstrap.min.js"></script>
 
     <script type="text/javascript">        
-        
+        $(document).on('click', '.remove-menu-point-permission', function() {
+            var role = $(this).data('role');
+            var menu = $(this).data('menu');
+             	
+            $.get("menu-points.php?act=remove-menu-point&menu-point=" + menu + "&role=" + role);
+            
+            $(this).children().removeClass("glyphicon-ok allowed");
+            $(this).children().addClass("glyphicon-remove not-allowed");  
+
+            $(this).addClass("add-menu-point-permission");
+            $(this).removeClass("remove-menu-point-permission");      
+        });
+
+        $(document).on('click', '.add-menu-point-permission', function() {            
+            var role = $(this).data('role');
+            var menu = $(this).data('menu');
+
+            $.get("menu-points.php?act=add-menu-point&menu-point=" + menu + "&role=" + role);
+
+            $(this).children().removeClass("glyphicon-remove not-allowed");
+            $(this).children().addClass("glyphicon-ok allowed");
+
+            $(this).addClass("remove-menu-point-permission");
+            $(this).removeClass("add-menu-point-permission");                       
+        });  
     </script>
   </body>
 </html>

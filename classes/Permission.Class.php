@@ -23,6 +23,8 @@
         const TOOL_CREATE_ASSIGNMENT_GROUP = 16;
         const TOOL_CREATE_ASSIGNMENT_SUB_GROUP = 17;
         const TOOL_VIEW_MENU_POINTS = 18;
+        const TOOL_VIEW_TEMPLATES = 19;
+        const TOOL_CHANGE_MENU_STATE = 20;
         
         protected $id;
         protected $name;
