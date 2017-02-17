@@ -54,8 +54,8 @@
                                                             <td colspan='2'>" . $assingnmentGroup->getName() . "</td>
                                                             <td class='col-sm-3 text-right'>
                                                                 <a class='btn btn-default btn-xs show-group-details' href='assignment-groups.php?act=assignment-group-view&id=" . $assingnmentGroup->getID() . "'><span class='glyphicon glyphicon-info-sign'></span> Info</a>
-                                                                <!-- <a class='btn btn-default btn-xs' href='#'><span class='glyphicon glyphicon-pencil'></span> Edit</a> -->
-                                                                <a class='btn btn-default btn-xs' href='#'><span class='glyphicon glyphicon-trash'></span> Delete</a>
+                                                                <!-- <a class='btn btn-default btn-xs' href=''><span class='glyphicon glyphicon-pencil'></span> Edit</a> -->
+                                                                <a class='btn btn-default btn-xs' href='assignment-groups.php?act=delete-group&id=" . $assingnmentGroup->getID() . "'><span class='glyphicon glyphicon-trash'></span> Delete</a>
                                                             </td>
                                                         </tr>";
 
@@ -71,7 +71,7 @@
                                                                 <td class='col-sm-3 text-right'>
                                                                     <a class='btn btn-default btn-xs show-sub-group-details' href='assignment-groups.php?act=assignment-sub-group-view&id=" . $assingnmentSubGroup->getID() . "'><span class='glyphicon glyphicon-info-sign'></span> Info</a>
                                                                     <!-- <a class='btn btn-default btn-xs' href='#'><span class='glyphicon glyphicon-pencil'></span> Edit</a> -->
-                                                                    <a class='btn btn-default btn-xs' href='#'><span class='glyphicon glyphicon-trash'></span> Delete</a>
+                                                                    <a class='btn btn-default btn-xs'href='assignment-groups.php?act=delete-sub-group&id=" . $assingnmentSubGroup->getID() . "'><span class='glyphicon glyphicon-trash'></span> Delete</a>
                                                                 </td>
                                                                 </tr>";
                                                 }
@@ -98,7 +98,7 @@
                                 $re .= "
                                 <div class='panel-group' id='accordion'>
                                 <div class='panel panel-default'>
-                                    <div class='panel-heading'><a data-toggle='collapse' data-parent='#accordion' href='#create-group'>Create Assignment-Group</a></div>
+                                    <div class='panel-heading'><h4 class='panel-title'><a data-toggle='collapse' data-parent='#accordion' href='#create-group'>Create Assignment-Group</a></h4></div>
                                     <div id='create-group' class='panel-collapse collapse in'>
                                     <div class='panel-body'>
                                         <form action='assignment-groups.php?act=assinment-group-add' method='POST'>

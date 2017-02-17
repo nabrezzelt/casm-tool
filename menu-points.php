@@ -8,7 +8,7 @@
         //User is not LoggedIn
         Helper::redirectTo("index.php");
         exit;         
-    }
+    }    
 ?>
 
 <!DOCTYPE html>
@@ -71,6 +71,24 @@
                         </div>
                         <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
                     </form> -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-bell"></span> <span class="badge"><?php echo Notification::getAllUnreadNotifications()->count(); ?></span></a>
+                        <ul class="dropdown-menu pre-scrollable" style="max-height: 150px;">                                
+                            <?php     
+
+                                $notifications = Notification::getAllUnreadNotifications();
+                                $notifications->setIteratorMode(SplDoublyLinkedList::IT_MODE_FIFO);
+                                for ($notifications->rewind(); $notifications->valid(); $notifications->next())
+                                {
+                                    $notification = $notifications->current();
+
+                                    echo "<li><a href='notifications.php?act=show&id=" . $notification->getID() . "'>" . $notification->getTitle() . "</a></li>";
+                                }
+
+                            ?>
+                             <li class='text-center'><a class='view-all-notifications' href='notifications.php'><span class='glyphicon glyphicon-envelope'></span> View-All</a></li>
+                        </ul>
+                    </li>
                     <p class="navbar-text logged_in_as" style="padding-left: 10px;">Logged in as <a href="account-panel.php"><?php echo unserialize($_SESSION['user'])->getUsername() ?></a></p>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu <span class="caret"></span></a>

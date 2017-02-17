@@ -1,19 +1,20 @@
-<?php         
+<?php        
     require_once("includes/Autoloader.Class.php");
-    require_once("handler/admin-panel.handler.php");
+    require_once("handler/notifications.handler.php");
     Autoloader::Init(Dev::DEBUG);    
 
     if (!isset($_SESSION['user'])) 
     {        
         //User is not LoggedIn
-        Helper::redirectTo("index.php");                  
+        Helper::redirectTo("index.php"); 
+        exit;        
     }
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?php echo APPNAME; ?> > Admin-Panel</title>
+    <title><?php echo APPNAME; ?> > Notifications</title>
 
     <meta charset="ISO-8859-1" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -70,24 +71,6 @@
                         </div>
                         <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
                     </form> -->
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-bell"></span> <span class="badge"><?php echo Notification::getAllUnreadNotifications()->count(); ?></span></a>
-                        <ul class="dropdown-menu pre-scrollable" style="max-height: 150px;">                                
-                            <?php     
-
-                                $notifications = Notification::getAllUnreadNotifications();
-                                $notifications->setIteratorMode(SplDoublyLinkedList::IT_MODE_FIFO);
-                                for ($notifications->rewind(); $notifications->valid(); $notifications->next())
-                                {
-                                    $notification = $notifications->current();
-
-                                    echo "<li><a href='notifications.php?act=show&id=" . $notification->getID() . "'>" . $notification->getTitle() . "</a></li>";
-                                }
-
-                            ?>
-                             <li class='text-center'><a class='view-all-notifications' href='notifications.php'><span class='glyphicon glyphicon-envelope'></span> View-All</a></li>
-                        </ul>
-                    </li>
                     <p class="navbar-text logged_in_as" style="padding-left: 10px;">Logged in as <a href="account-panel.php"><?php echo unserialize($_SESSION['user'])->getUsername() ?></a></p>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu <span class="caret"></span></a>
@@ -101,11 +84,10 @@
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
-    </nav>    
-    <div class='container main-frame'>        
-        <?php
-            echo handler();
-        ?>          
+    </nav>
+
+    <div class='container main-frame'>
+        <?php echo handler(); ?>
     </div>
 
     <!-- jQuery (wird für Bootstrap JavaScript-Plugins benötigt) -->
@@ -113,18 +95,8 @@
     <!-- Binde alle kompilierten Plugins zusammen ein (wie hier unten) oder such dir einzelne Dateien nach Bedarf aus -->
     <script src="js/bootstrap.min.js"></script>
 
-    <script>
-        var url = document.location.toString();
-        if (url.match('#')) {
-            $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
-        }
-
-        // Change hash for page-reload
-        $('.nav-tabs a').on('shown.bs.tab', function (e) {
-            window.location.hash = e.target.hash;
-        })
-                
-
+    <script type="text/javascript">
+           
     </script>
   </body>
 </html>

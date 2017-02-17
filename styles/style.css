@@ -19,6 +19,7 @@
 .admin-panel-btn-back
 {
     font-size: 16px !important;
+    color: #dbdbdb !important;
 }
 
 .allowed {
@@ -29,4 +30,10 @@
 .not-allowed {
     color:  #c9302c;
     cursor: pointer;
+}
+
+.view-all-notifications
+{
+    border-top: 2px solid;
+    margin-bottom: -5px;
 }
