@@ -30,6 +30,69 @@
                 }
                 break;
 
+            case "save-changes":
+                if(Permission::hasPermission(Permission::TOOL_CHANGE_TEMPLATES, unserialize($_SESSION['user'])->getID()))
+                {
+                    Template::saveTemplate(
+                        e($_POST['name']),
+                        e($_POST['creatorID']),
+                        e($_POST['editorID']),
+                        e($_POST['auszeit']),
+                        e($_POST['beschleunigung']),
+                        e($_POST['fachteams']),
+                        e($_POST['serviceID']),
+                        e($_POST['managerGroupID']),
+                        e($_POST['managerSubGroupID']),
+                        e($_POST['managerName']),
+                        e($_POST['changeEnd']),
+                        e($_POST['changeStart']),
+                        e($_POST['dringlichkeit']),
+                        e($_POST['durchlaufzeit']),
+                        e($_POST['genehmigerGroupID']),
+                        e($_POST['genehmigerSubGroupID']),
+                        e($_POST['auszeitDauer']),
+                        e($_POST['gutfallServiceImpact']),
+                        e($_POST['schlechtfallServiceImpact']),
+                        e($_POST['durchfuehrung']),
+                        e($_POST['koordinator']),
+                        e($_POST['koordinierungsbedarf']),
+                        e($_POST['kundenauswirkungGut']),
+                        e($_POST['kundenauswirkungSchlecht']),
+                        e($_POST['kurzbeschreibung']),
+                        e($_POST['langbeschreibung']),
+                        e($_POST['CI']), 
+                        e($_POST['redundanz']),
+                        e($_POST['risikoklasse']),
+                        e($_POST['risikomassnahme']), 
+                        e($_POST['rueckfallprozedur']), 
+                        e($_POST['steuerung']),
+                        e($_POST['ausloeserID']), 
+                        e($_POST['taetigkeit']), 
+                        e($_POST['taetigkeitUmfang']), 
+                        e($_POST['vierAugen']),
+                        e($_POST['auflagen']),
+                        e($_POST['assignmentGroupID']), 
+                        e($_POST['assignmentSubGroupID']), 
+                        e($_POST['assignmentName'])
+                    );
+                }
+                else
+                {
+                    return Helper::noPermission(Permission::TOOL_CHANGE_TEMPLATES);
+                }
+            break;
+
+            case "create":
+                if(Permission::hasPermission(Permission::TOOL_CREATE_TEMPLATES, unserialize($_SESSION['user'])->getID()))
+                {
+
+                }
+                else
+                {
+                    return Helper::noPermission(Permission::TOOL_CHANGE_TEMPLATES); 
+                }
+            break;
+
             default:
                 if(Permission::hasPermission(Permission::TOOL_VIEW_TEMPLATES, unserialize($_SESSION['user'])->getID()))
                 {
@@ -63,7 +126,7 @@
 
     function createTemplate()
     {
-         $re  = "<form class='form-horizontal'>
+         $re  = "<form class='form-horizontal' action='templates.php?act=create' method='POST'>
                     <h3>Template-Bearbeiten</h3>
                     <div class='form-group'>
                         <label class='control-label col-sm-2'>Template-Name:</label>
@@ -96,25 +159,50 @@
                     <div class='form-group'>
                         <label class='control-label col-sm-2'>Service:</label>
                         <div class='col-sm-10'>
-                            <select class='form-control' name='serviceID'>
-                                //TODO!
-                            </select>
+                            <select class='form-control' name='serviceID'>";
+
+                            $services = Service::getAllServices();
+                            $services = Organisation::getAllOrganisations();              
+                            $services->setIteratorMode(SplDoublyLinkedList::IT_MODE_FIFO);
+                            for ($services->rewind(); $services->valid(); $services->next())
+                            {
+                                $service = $services->current();
+                                $re .= "<option value='" . $service->getID() . "'>" . $service->getName() . "</option>";                              
+                            }
+
+                    $re .= "</select>
                         </div>
                     </div>
                     <div class='form-group'>
                         <label class='control-label col-sm-2'>Manager-Group:</label>
                         <div class='col-sm-10'>
-                            <select class='form-control' name='managerGroupID'>
-                                //TODO!
-                            </select>
+                            <select class='form-control' name='managerGroupID'>";
+                                
+                            $assingnmentGroups = AssignmentGroup::getAllAssignmentGroupsWithoutSubGroups();
+                            $assingnmentGroups->setIteratorMode(SplDoublyLinkedList::IT_MODE_FIFO);
+                            for ($assingnmentGroups->rewind(); $assingnmentGroups->valid(); $assingnmentGroups->next())
+                            {
+                                $assingnmentGroup = $assingnmentGroups->current();
+                                $re .= "<option value='" . $assingnmentGroup->getID() . "'>" . $assingnmentGroup->getName() . "</option>";
+                            }
+
+                    $re .= "</select>
                         </div>
                     </div>
                     <div class='form-group'>
                         <label class='control-label col-sm-2'>Manager-Sub-Group:</label>
                         <div class='col-sm-10'>
-                            <select class='form-control' name='managerSubGroupID'>
-                                //TODO!
-                            </select>
+                            <select class='form-control' name='managerSubGroupID'>";
+                            
+                            $assingnmentSubGroups = AssignmentSubGroup::getAllSubGroups();
+                            $assingnmentSubGroups->setIteratorMode(SplDoublyLinkedList::IT_MODE_FIFO);
+                            for ($assingnmentSubGroups->rewind(); $assingnmentSubGroups->valid(); $assingnmentSubGroups->next())
+                            {
+                                $assingnmentSubGroup = $assingnmentSubGroups->current();
+                                $re .= "<option value='" . $assingnmentSubGroup->getID() . "'>" . $assingnmentSubGroup->getName() . "</option>";
+                            }
+
+                    $re .= "</select>
                         </div>
                     </div>
                     <div class='form-group'>
@@ -296,9 +384,17 @@
                     <div class='form-group'>
                         <label class='control-label col-sm-2'>Auslöser:</label>
                         <div class='col-sm-10'>
-                            <select class='form-control' name='ausloeserID'>
-                                //TODO!
-                            </select>
+                            <select class='form-control' name='ausloeserID'>";
+
+                            $ausloeser = Ausloeser::getAllAusloeser();
+                            $ausloeser->setIteratorMode(SplDoublyLinkedList::IT_MODE_FIFO);
+                            for ($ausloeser->rewind(); $ausloeser->valid(); $ausloeser->next())
+                            {
+                                $a = $ausloeser->current();
+                                $re .= "<option value='" . $a->getID() . "'>" . $a->getName() . "</option>";
+                            }
+
+                    $re .= "</select>
                         </div>
                     </div>
                     <div class='form-group'>
@@ -331,17 +427,33 @@
                     <div class='form-group'>
                         <label class='control-label col-sm-2'>Assignment-Group:</label>
                         <div class='col-sm-10'>
-                            <select class='form-control' name='assignmentGroupID'>
-                                //TODO!
-                            </select>
+                            <select class='form-control' name='assignmentGroupID'>";
+
+                            $assingnmentGroups = AssignmentGroup::getAllAssignmentGroupsWithoutSubGroups();
+                            $assingnmentGroups->setIteratorMode(SplDoublyLinkedList::IT_MODE_FIFO);
+                            for ($assingnmentGroups->rewind(); $assingnmentGroups->valid(); $assingnmentGroups->next())
+                            {
+                                $assingnmentGroup = $assingnmentGroups->current();
+                                $re .= "<option value='" . $assingnmentGroup->getID() . "'>" . $assingnmentGroup->getName() . "</option>";
+                            }
+
+                    $re .= "</select>
                         </div>
                     </div>
                     <div class='form-group'>
                         <label class='control-label col-sm-2'>Assignment-Sub-Group:</label>
                         <div class='col-sm-10'>
-                            <select class='form-control' name='assignmentSubGroupID'>
-                                //TODO!
-                            </select>
+                            <select class='form-control' name='assignmentSubGroupID'>";
+                            
+                            $assingnmentSubGroups = AssignmentSubGroup::getAllSubGroups();
+                            $assingnmentSubGroups->setIteratorMode(SplDoublyLinkedList::IT_MODE_FIFO);
+                            for ($assingnmentSubGroups->rewind(); $assingnmentSubGroups->valid(); $assingnmentSubGroups->next())
+                            {
+                                $assingnmentSubGroup = $assingnmentSubGroups->current();
+                                $re .= "<option value='" . $assingnmentSubGroup->getID() . "'>" . $assingnmentSubGroup->getName() . "</option>";
+                            }
+
+                    $re .= "</select>
                         </div>
                     </div>
                     <div class='form-group'>
@@ -369,7 +481,7 @@
 
 
         $re  = "<h3>Template-Bearbeiten</h3>"; 
-        $re .= "<form class='form-horizontal'>                    
+        $re .= "<form class='form-horizontal' action='templates.php?act=save-changes&id=$templateID' method='POST'>                    
                     <div class='form-group'>
                         <label class='control-label col-sm-2'>Template-Name:</label>
                         <div class='col-sm-10'>
@@ -401,25 +513,50 @@
                     <div class='form-group'>
                         <label class='control-label col-sm-2'>Service:</label>
                         <div class='col-sm-10'>
-                            <select class='form-control' name='serviceID'>
-                                //TODO!
-                            </select>
+                            <select class='form-control' name='serviceID'>";
+                            
+                            $services = Service::getAllServices();
+                            $services = Organisation::getAllOrganisations();              
+                            $services->setIteratorMode(SplDoublyLinkedList::IT_MODE_FIFO);
+                            for ($services->rewind(); $services->valid(); $services->next())
+                            {
+                                $service = $services->current();
+                                $re .= "<option value='" . $service->getID() . "' " . (($row['serviceID'] == $service->getID()) ? 'selected' : '') . ">" . $service->getName() . "</option>";                              
+                            }
+                            
+                    $re .= "</select>
                         </div>
                     </div>
                     <div class='form-group'>
                         <label class='control-label col-sm-2'>Manager-Group:</label>
                         <div class='col-sm-10'>
-                            <select class='form-control' name='managerGroupID'>
-                                //TODO!
-                            </select>
+                            <select class='form-control' name='managerGroupID'>";
+
+                            $assingnmentGroups = AssignmentGroup::getAllAssignmentGroupsWithoutSubGroups();
+                            $assingnmentGroups->setIteratorMode(SplDoublyLinkedList::IT_MODE_FIFO);
+                            for ($assingnmentGroups->rewind(); $assingnmentGroups->valid(); $assingnmentGroups->next())
+                            {
+                                $assingnmentGroup = $assingnmentGroups->current();
+                                $re .= "<option value='" . $assingnmentGroup->getID() . "' " . (($row['managerGroupID'] == $service->getID()) ? 'selected' : '') . ">" . $assingnmentGroup->getName() . "</option>";
+                            }
+
+                    $re .= "</select>
                         </div>
                     </div>
                     <div class='form-group'>
                         <label class='control-label col-sm-2'>Manager-Sub-Group:</label>
                         <div class='col-sm-10'>
-                            <select class='form-control' name='managerSubGroupID'>
-                                //TODO!
-                            </select>
+                            <select class='form-control' name='managerSubGroupID'>";
+
+                            $assingnmentSubGroups = AssignmentSubGroup::getAllSubGroups();
+                            $assingnmentSubGroups->setIteratorMode(SplDoublyLinkedList::IT_MODE_FIFO);
+                            for ($assingnmentSubGroups->rewind(); $assingnmentSubGroups->valid(); $assingnmentSubGroups->next())
+                            {
+                                $assingnmentSubGroup = $assingnmentSubGroups->current();
+                                $re .= "<option value='" . $assingnmentSubGroup->getID() . "' " . (($row['managerSubGroupID'] == $service->getID()) ? 'selected' : '') . ">" . $assingnmentSubGroup->getName() . "</option>";
+                            }
+
+                    $re .= "</select>
                         </div>
                     </div>
                     <div class='form-group'>
@@ -460,17 +597,33 @@
                     <div class='form-group'>
                         <label class='control-label col-sm-2'>Genehmigungs-Gruppe:</label>
                         <div class='col-sm-10'>
-                            <select class='form-control' name='genehmigerGroupID'>
-                                //TODO!
-                            </select>
+                            <select class='form-control' name='genehmigerGroupID'>";
+
+                            $assingnmentGroups = AssignmentGroup::getAllAssignmentGroupsWithoutSubGroups();
+                            $assingnmentGroups->setIteratorMode(SplDoublyLinkedList::IT_MODE_FIFO);
+                            for ($assingnmentGroups->rewind(); $assingnmentGroups->valid(); $assingnmentGroups->next())
+                            {
+                                $assingnmentGroup = $assingnmentGroups->current();
+                                $re .= "<option value='" . $assingnmentGroup->getID() . "' " . (($row['genehmigerGroupID'] == $service->getID()) ? 'selected' : '') . ">" . $assingnmentGroup->getName() . "</option>";
+                            }
+
+                    $re .= "</select>
                         </div>                        
                     </div>
                     <div class='form-group'>
                         <label class='control-label col-sm-2'>Genehmiger-Sub-Gruppe:</label>
                         <div class='col-sm-10'>
-                            <select class='form-control' name='genehmigerSubGroupID'>
-                                //TODO!
-                            </select>
+                            <select class='form-control' name='genehmigerSubGroupID'>";
+                                
+                            $assingnmentSubGroups = AssignmentSubGroup::getAllSubGroups();
+                            $assingnmentSubGroups->setIteratorMode(SplDoublyLinkedList::IT_MODE_FIFO);
+                            for ($assingnmentSubGroups->rewind(); $assingnmentSubGroups->valid(); $assingnmentSubGroups->next())
+                            {
+                                $assingnmentSubGroup = $assingnmentSubGroups->current();
+                                $re .= "<option value='" . $assingnmentSubGroup->getID() . "' " . (($row['genehmigerSubGroupID'] == $service->getID()) ? 'selected' : '') . ">" . $assingnmentSubGroup->getName() . "</option>";
+                            }
+
+                    $re .= "</select>
                         </div>                        
                     </div>
                     <div class='form-group'>
@@ -648,17 +801,33 @@
                     <div class='form-group'>
                         <label class='control-label col-sm-2'>Assignment-Group:</label>
                         <div class='col-sm-10'>
-                            <select class='form-control' name='assignmentGroupID'>
-                                //TODO!
-                            </select>
+                            <select class='form-control' name='assignmentGroupID'>";
+
+                            $assingnmentGroups = AssignmentGroup::getAllAssignmentGroupsWithoutSubGroups();
+                            $assingnmentGroups->setIteratorMode(SplDoublyLinkedList::IT_MODE_FIFO);
+                            for ($assingnmentGroups->rewind(); $assingnmentGroups->valid(); $assingnmentGroups->next())
+                            {
+                                $assingnmentGroup = $assingnmentGroups->current();
+                                $re .= "<option value='" . $assingnmentGroup->getID() . "' " . (($row['assignmentGroupID'] == $service->getID()) ? 'selected' : '') . ">" . $assingnmentGroup->getName() . "</option>";
+                            }
+
+                    $re .= "</select>
                         </div>
                     </div>
                     <div class='form-group'>
                         <label class='control-label col-sm-2'>Assignment-Sub-Group:</label>
                         <div class='col-sm-10'>
-                            <select class='form-control' name='assignmentSubGroupID'>
-                                //TODO!
-                            </select>
+                            <select class='form-control' name='assignmentSubGroupID'>";
+
+                            $assingnmentSubGroups = AssignmentSubGroup::getAllSubGroups();
+                            $assingnmentSubGroups->setIteratorMode(SplDoublyLinkedList::IT_MODE_FIFO);
+                            for ($assingnmentSubGroups->rewind(); $assingnmentSubGroups->valid(); $assingnmentSubGroups->next())
+                            {
+                                $assingnmentSubGroup = $assingnmentSubGroups->current();
+                                $re .= "<option value='" . $assingnmentSubGroup->getID() . "' " . (($row['assignmentSubGroupID'] == $service->getID()) ? 'selected' : '') . ">" . $assingnmentSubGroup->getName() . "</option>";
+                            }
+
+                    $re .= "</select>
                         </div>
                     </div>
                     <div class='form-group'>
@@ -676,5 +845,10 @@
                 </form>";
 
                 return $re;
+    }
+
+    private function e($str)
+    {
+        return mysql_real_escape_string($str);
     }
 ?>

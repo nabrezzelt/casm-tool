@@ -37,3 +37,7 @@ public static function printChildsAsList($parentid)
 
             endwhile;            
         }
+
+
+
+        `name`,  `creatorID`,  `editorID`,  `auszeit`,  LEFT(`beschleunigung`, 256),  `fachteams`,  `serviceID`,  `managerGroupID`,  `managerSubGroupID`,  `managerName`,  `changeEnd`,  `changeStart`,  `dringlichkeit`,  `durchlaufzeit`,  `genehmigerGroupID`,  `genehmigerSubGroupID`,  `auszeitDauer`,  `gutfallServiceImpact`,  `schlechtfallServiceImpact`,  `durchfuehrung`,  `koordinator`,  `koordinierungsbedarf`,  `kundenauswirkungGut`,  `kundenauswirkungSchlecht`,  `kurzbeschreibung`,  LEFT(`langbeschreibung`, 256),  `CI`,  `redundanz`,  `risikoklasse`,  LEFT(`risikomassnahme`, 256),  `rueckfallprozedur`,  `steuerung`,  `ausloeserID`,  LEFT(`taetigkeit`, 256),  `taetigkeitUmfang`,  `vierAugen`,  `auflagen`,  `assignmentGroupID`,  `assignmentSubGroupID`,  `assignmentName` FROM `casm-tool`.`templates` ORDER BY `assignmentGroupID` ASC LIMIT 1000;

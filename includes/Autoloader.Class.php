@@ -63,7 +63,8 @@
             require_once("classes/AssignmentStatus.Class.php");            
             require_once("classes/Permission.Class.php");
             require_once("classes/ExtendedPermission.Class.php");
-            require_once("classes/Group.Class.php");     
+            require_once("classes/Group.Class.php");   
+            require_once("classes/Notification.Class.php");  
 
         ### CASM-Tool Classes
             require_once("classes/Organisation.Class.php");
@@ -72,9 +73,7 @@
             require_once("classes/MenuPoint.Class.php");
             require_once("classes/Role.Class.php");
             require_once("classes/Ausloeser.Class.php");
-
-        ##
-            require_once("classes/Notification.Class.php");
+            require_once("classes/Service.Class.php");            
        }
     }    
 ?>
