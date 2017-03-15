@@ -123,6 +123,26 @@
             $query = "INSERT INTO notifications (userID, title, content) VALUES ($userID, '$title', '$content')";
             $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
         }    
+
+        public static function isOwner($notificationID)
+        {
+            $query = "SELECT userID FROM notifications WHERE id = $notificationID";
+            $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
+            $row = mysql_fetch_assoc($res);
+
+            if($row['userID'] == unserialize($_SESSION['user'])->getID())
+            {
+                return true;
+            }            
+
+            return false;
+        }
+
+        public static function delete($notificationID)
+        {
+            $query = "DELETE FROM notifications WHERE id = $notificationID";
+            $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
+        }
     }
     
 ?>

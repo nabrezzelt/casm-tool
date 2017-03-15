@@ -847,7 +847,7 @@
                 return $re;
     }
 
-    private function e($str)
+    function e($str)
     {
         return mysql_real_escape_string($str);
     }

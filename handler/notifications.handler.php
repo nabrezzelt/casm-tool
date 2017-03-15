@@ -37,6 +37,17 @@
                 }   
             break;
             
+            case "delete":
+                if(isset($_GET['id']))
+                {
+                    if(Notification::isOwner($_GET['id']))
+                    {
+                        Notification::delete($_GET['id']);
+                        Helper::showAlert("Notification sucessfully deleted!", "success");
+                        Helper::redirectTo("notifications.php", 3);
+                    }
+                }
+            break;
 
             default:
                 $notifications = Notification::getAllNotifications();

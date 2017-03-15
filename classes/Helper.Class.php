@@ -170,7 +170,7 @@ class Helper
 
     public static function showAlert($content, $color, $dismissible = false) 
     {
-        echo   "<div class='alert " . (($dismissible) ? "alert-dismissible" : "") . " alert-$color'>
+        echo "<div class='alert " . (($dismissible) ? "alert-dismissible" : "") . " alert-$color'>
                     " . (($dismissible) ? "<button type='button' class='close' data-dismiss='alert'>&times;</button>" : "") . "
                     $content
                 </div>";
