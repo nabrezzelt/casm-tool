@@ -125,7 +125,7 @@
             return $re;            
         }
 
-        public static function add($role, $menu)
+        public static function addRolePermission($role, $menu)
         {
             $query = "INSERT INTO menu_point_access (roleID, menuID) VALUES ($role, $menu)";
             $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
@@ -148,6 +148,20 @@
         public static function deleteAllPermissions($menuPointID)
         {
             $query = "DELETE FROM menu_point_access WHERE menuID = $menuPointID";
+            $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
+        }
+
+        public static function create($name, $parentID, $description)
+        {
+            if(((int) $parentID) == 0)
+            {
+                $query = "INSERT INTO menu_point (name, parentID, description) VALUES (\"$name\", NULL, \"$description\")";
+            }
+            else 
+            {
+                $query = "INSERT INTO menu_point (name, parentID, description) VALUES (\"$name\", $parentID, \"$description\")";
+            }
+
             $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
         }
     }

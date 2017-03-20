@@ -60,7 +60,14 @@
                             <li><a href="assignment-groups.php#create-sub-group"></span> Bearbeiter-Untergruppen hinzufügen</a></li>
                         </ul>
                     </li>
-                    <li><a href="menu-points.php">Menü-Struktur</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menü-Struktur <span class="caret"></span></a>
+                        <ul class="dropdown-menu">                                
+                            <li><a href="menu-points.php"> Menü-Struktur anzeigen</a></li>                                
+                            <li role="separator" class="divider"></li>
+                            <li><a href="menu-points.php?act=menu-point-add"> Create Menu-Point</a></li>                            
+                        </ul>
+                    </li>
                     <li><a href="templates.php">Templates</a></li> 
                 </ul>
 

@@ -28,6 +28,7 @@
         const TOOL_DELETE_MENU_POINT = 21;
         const TOOL_CREATE_TEMPLATES = 22;
         const TOOL_CHANGE_TEMPLATES = 23;
+        const TOOL_CREATE_MENU_POINT = 24;
         
         protected $id;
         protected $name;
