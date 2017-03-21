@@ -18,24 +18,20 @@
         switch ($act) {     
             case "add-menu-point":
                 if(isset($_GET['role']) && isset($_GET['menu-point']))
-                {
-                    echo "s1";
+                {                
                     if(Permission::hasPermission(Permission::TOOL_CHANGE_MENU_STATE, unserialize($_SESSION['user'])->getID()))
                     {
-                        MenuPoint::addRolePermission(mysql_real_escape_string($_GET['role']), mysql_real_escape_string($_GET['menu-point']));
-                        echo "s2";
+                        MenuPoint::addRolePermission(mysql_real_escape_string($_GET['role']), mysql_real_escape_string($_GET['menu-point']));                        
                     }
                 }                
             break;
 
             case "remove-menu-point":
                 if(isset($_GET['role']) && isset($_GET['menu-point']))
-                {
-                    echo "s3";
+                {                
                     if(Permission::hasPermission(Permission::TOOL_CHANGE_MENU_STATE, unserialize($_SESSION['user'])->getID()))
                     {
-                        MenuPoint::remove(mysql_real_escape_string($_GET['role']), mysql_real_escape_string($_GET['menu-point']));
-                        echo "s4";
+                        MenuPoint::removeRolePermission(mysql_real_escape_string($_GET['role']), mysql_real_escape_string($_GET['menu-point']));                       
                     }
                 }
             break;
@@ -55,7 +51,7 @@
             break;
             
             case "menu-point-add":
-                if(Permission::hasPermission(Permission::TOOL_DELETE_MENU_POINT, unserialize($_SESSION['user'])->getID()))
+                if(Permission::hasPermission(Permission::TOOL_CREATE_MENU_POINT, unserialize($_SESSION['user'])->getID()))
                 {
                     if(isset($_POST['menu-point-name']) && isset($_POST['parent-menu-point'])) 
                     {                        
@@ -70,11 +66,19 @@
                                         <label class='control-label col-sm-2' for='email'>Übergeortneter Menüpunkt:</label>
                                         <div class='col-sm-10'>
                                             <select class='form-control' name='parent-menu-point'>
-                                                <option value='0' selected='selected'>Keiner</option>
-                                                <option value='1'>MenuPoint18</option>
-                                                <option value='2'>MenuPoint65</option>
-                                                <option value='3'>MenuPoint974</option>
-                                            </select>
+                                                <option value='0' selected='selected'>Keiner</option>";
+                                                
+                                                $menuPoints = MenuPoint::getAllMenuPoints();
+
+                                                $menuPoints->setIteratorMode(SplDoublyLinkedList::IT_MODE_FIFO);
+                                                for ($menuPoints->rewind(); $menuPoints->valid(); $menuPoints->next())
+                                                {
+                                                    $menuPoint = $menuPoints->current();
+
+                                                    $re .= "<option value='" . $menuPoint->getID() . "'>" . $menuPoint->getName() . "</option>";
+                                                }
+
+                                    $re .= "</select>
                                         </div>
                                     </div>
                                     <div class='form-group'>
@@ -99,7 +103,7 @@
                 }
                 else
                 {
-                    return Helper::noPermission(Permission::TOOL_DELETE_MENU_POINT);
+                    return Helper::noPermission(Permission::TOOL_CREATE_MENU_POINT);
                 }                
             break;
 

@@ -131,7 +131,7 @@
             $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
         }
 
-        public static function remove($role, $menuPoint)
+        public static function removeRolePermission($role, $menuPoint)
         {
             $query = "DELETE FROM menu_point_access WHERE roleID = $role AND menuID = $menuPoint";
             $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
@@ -163,6 +163,21 @@
             }
 
             $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
+        }
+
+        public static function getAllMenuPoints()
+        {
+            $query = "SELECT * FROM menu_point";
+            $res = mysql_query($query)or die(Helper::SQLErrorFormat(mysql_error(), $query, __METHOD__, __FILE__, __LINE__));
+
+            $menuPoints = new SplDoublyLinkedList();
+
+            while($row = mysql_fetch_assoc($res)) 
+            {
+                $menuPoints->push(new MenuPoint($row['id'], $row['name'], $row['description'], null));
+            }
+
+            return $menuPoints;
         }
     }
     
